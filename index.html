@@ -10,7 +10,7 @@
             overflow: hidden;
             background-color: black;
             font-family: Arial, sans-serif;
-            transition: background-color 2s ease; /* Smooth background transition */
+            transition: background-color 1s ease; /* Smooth background transition */
         }
 
         .heart {
@@ -19,7 +19,7 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            animation: beat 1s infinite alternate ease-in-out;
+            animation: beat 0.8s infinite alternate ease-in-out;
             cursor: pointer;
             z-index: 10;
         }
@@ -45,6 +45,7 @@
             position: absolute;
             pointer-events: none;
             transition: transform 0.5s ease, opacity 0.5s ease;
+            white-space: nowrap;
         }
 
         .rain {
@@ -71,6 +72,17 @@
             transition: opacity 0.5s ease-in-out;
             z-index: 8;
         }
+
+        .hug {
+            font-size: 50px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) translateY(-30px); /* Start above */
+            z-index: 9;
+        }
     </style>
 </head>
 <body>
@@ -78,7 +90,7 @@
     <div class="text" id="text1">You are the best person I have ever met...</div>
     <div class="text" id="text2">My pyaari best...</div>
     <div class="text" id="text3">Love you my cutiepie...</div>
-    <div class="text" id="hugEmoji">🫂</div>
+    <div class="hug" id="hugEmoji">🫂</div>
     <div class="rain" id="rainContainer"></div> <!-- Container for rain -->
 
     <script>
@@ -93,6 +105,7 @@
 
         heart.addEventListener('click', function() {
             if (clickCount === 0) {
+                heart.style.display = 'none'; // Hide heart button immediately
                 showBlast();
                 clickCount++;
             }
@@ -159,8 +172,8 @@
 
             // Animate emoji explosion
             setTimeout(() => {
-                const deltaX = (Math.random() - 0.5) * 200; // Random horizontal movement
-                const deltaY = (Math.random() - 0.5) * 200; // Random vertical movement
+                const deltaX = (Math.random() - 0.5) * 600; // Random horizontal movement
+                const deltaY = (Math.random() - 0.5) * 600; // Random vertical movement
                 emojiElement.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.5)`;
                 emojiElement.style.opacity = 0;
             }, 100);
@@ -180,8 +193,7 @@
                 heartRain.style.fontSize = Math.random() * 30 + 20 + 'px';
                 heartRain.style.opacity = 1;
                 heartRain.style.animationDuration = (Math.random() * 2 + 3) + 's'; // Random fall duration
-                heartRain.style.transform = 'translateY(0)';
-                heartRain.style.transition = 'transform 1s linear, opacity 2s linear';
+                heartRain.style.transition = 'transform 2s linear, opacity 2s linear';
                 rainContainer.appendChild(heartRain);
                 
                 // Animate rain with falling effect
