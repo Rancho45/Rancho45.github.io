@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             background-color: black;
             overflow: hidden;
             position: relative;
@@ -29,8 +30,8 @@
         }
 
         #heartButton {
-            padding: 15px 30px;
-            font-size: 1.5em;
+            padding: 10px 20px;
+            font-size: 2em; /* Adjusted for mobile */
             color: white;
             background-color: red;
             border: none;
@@ -56,9 +57,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             pointer-events: none;
             z-index: 5;
             display: none; /* Hidden initially */
@@ -71,11 +69,13 @@
         }
 
         #text {
-            font-size: 2.5em;
+            font-size: 3em; /* Adjust font size for mobile */
             transition: opacity 1s ease-in-out;
             opacity: 0;
             position: absolute;
             z-index: 10;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         @keyframes rain {
@@ -90,9 +90,20 @@
         .heartRain {
             position: absolute;
             top: -10%;
-            font-size: 2em; /* Adjust size */
+            font-size: 3em; /* Adjust size for heart rain */
             animation: rain linear forwards;
             opacity: 0;
+        }
+
+        /* Responsive design for 9:16 aspect ratio */
+        @media (max-width: 360px) {
+            #heartButton {
+                padding: 8px 16px;
+                font-size: 1.5em; /* Smaller button on very small screens */
+            }
+            #text {
+                font-size: 2.5em; /* Adjust text size */
+            }
         }
     </style>
 </head>
@@ -121,6 +132,8 @@
             }
             setTimeout(() => {
                 blastArea.style.display = 'none'; // Hide blast area after emojis
+                document.body.style.transition = "background-color 2s"; // Transition background
+                document.body.style.backgroundColor = "pink"; // Change to pink
                 showText("You are the best person I have ever met!", 2000, "pink");
             }, 2000);
         }
@@ -156,6 +169,7 @@
                 text.style.opacity = '0'; // Fade out text
                 setTimeout(() => {
                     if (message === "You are the best person I have ever met!") {
+                        document.body.style.backgroundColor = "purple"; // Change to purple
                         showText("My Pyaari Best!", 2000, "purple");
                     } else if (message === "My Pyaari Best!") {
                         showText("Love you, my cutie pie! 💕", 2000, "white");
@@ -163,9 +177,9 @@
                         // Show hug emoji at the end
                         const hugEmoji = document.createElement('div');
                         hugEmoji.innerHTML = '🤗';
-                        hugEmoji.style.fontSize = '3em';
+                        hugEmoji.style.fontSize = '4em'; // Adjust for visibility
                         hugEmoji.style.position = 'absolute';
-                        hugEmoji.style.bottom = '10%';
+                        hugEmoji.style.bottom = '20%'; // Adjust for better visibility
                         hugEmoji.style.left = '50%';
                         hugEmoji.style.transform = 'translateX(-50%)';
                         document.body.appendChild(hugEmoji);
@@ -187,7 +201,7 @@
             finalButton.style.left = '50%';
             finalButton.style.transform = 'translateX(-50%)';
             finalButton.style.padding = '10px 20px';
-            finalButton.style.fontSize = '1.2em';
+            finalButton.style.fontSize = '1.5em'; // Adjusted for mobile
             finalButton.style.backgroundColor = '#FF1493';
             finalButton.style.color = 'white';
             finalButton.style.border = 'none';
@@ -199,40 +213,8 @@
                 window.history.back(); // Redirect to the previous page
             });
         }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Rain Animation</title>
-    <style>
-        /* Continuation of previous styles */
-        .heartRain {
-            position: absolute;
-            top: -10%;
-            font-size: 2em; /* Adjust size */
-            animation: rain linear forwards;
-            opacity: 0;
-        }
 
-        @keyframes rain {
-            0% {
-                top: -10%;
-                opacity: 1;
-            }
-            100% {
-                top: 100%;
-                opacity: 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <script>
-        // Start heart rain after all animations are done
+        // Heart rain animation function
         function startHeartRain() {
             setInterval(() => {
                 createHeartRain();
