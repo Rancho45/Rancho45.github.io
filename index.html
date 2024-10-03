@@ -16,140 +16,249 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: black;
             overflow: hidden;
+            position: relative;
+            color: white;
         }
 
         #container {
-            position: relative;
             text-align: center;
-        }
-
-        #text {
-            font-size: 2.5em;
-            color: #FF1493;
-            transition: opacity 0.5s ease-in-out;
+            position: relative;
             z-index: 10;
         }
 
-        #triggerBtn {
-            padding: 10px 20px;
-            font-size: 1em;
+        #heartButton {
+            padding: 15px 30px;
+            font-size: 1.5em;
             color: white;
-            background-color: #FF1493;
+            background-color: red;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: opacity 0.5s ease-in-out;
-            z-index: 10;
+            animation: beat 1s infinite;
+            transition: transform 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        #hearts {
+        @keyframes beat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        #blastArea {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             pointer-events: none;
-            z-index: 0;
+            z-index: 5;
+            display: none; /* Hidden initially */
         }
 
-        .heart {
+        .emoji {
             position: absolute;
-            animation: fall linear forwards;
+            font-size: 3em; /* Adjust emoji size */
             opacity: 0;
-            font-size: 1.5em; /* Adjust size as needed */
         }
 
-        @keyframes fall {
+        #text {
+            font-size: 2.5em;
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            position: absolute;
+            z-index: 10;
+        }
+
+        @keyframes rain {
             0% {
-                transform: translateY(0) scale(1);
+                top: -10%;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+
+        .heartRain {
+            position: absolute;
+            top: -10%;
+            font-size: 2em; /* Adjust size */
+            animation: rain linear forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <button id="heartButton">❤️ Click Me!</button>
+        <div id="blastArea"></div>
+        <div id="text"></div>
+    </div>
+
+    <script>
+        const heartButton = document.getElementById('heartButton');
+        const blastArea = document.getElementById('blastArea');
+        const text = document.getElementById('text');
+
+        heartButton.addEventListener('click', () => {
+            heartButton.style.display = 'none'; // Hide button
+            blastArea.style.display = 'flex'; // Show blast area
+            blastEmojiBlast(); // Start emoji blast
+        });
+
+        function blastEmojiBlast() {
+            const emojis = ['💖', '🌸', '🎉', '🌺', '💗', '💞'];
+            for (let i = 0; i < 100; i++) {
+                createEmoji(emojis[Math.floor(Math.random() * emojis.length)]);
+            }
+            setTimeout(() => {
+                blastArea.style.display = 'none'; // Hide blast area after emojis
+                showText("You are the best person I have ever met!", 2000, "pink");
+            }, 2000);
+        }
+
+        function createEmoji(emoji) {
+            const emojiElement = document.createElement('div');
+            emojiElement.classList.add('emoji');
+            emojiElement.innerHTML = emoji;
+
+            // Random position and animation
+            const x = Math.random() * 100; // 0 to 100%
+            const y = Math.random() * 100; // 0 to 100%
+
+            emojiElement.style.left = `${x}vw`;
+            emojiElement.style.top = `${y}vh`;
+            emojiElement.style.animationDuration = `${Math.random() * 1 + 1}s`;
+            emojiElement.style.opacity = '1';
+
+            blastArea.appendChild(emojiElement);
+
+            // Remove after animation ends
+            emojiElement.addEventListener('animationend', () => {
+                emojiElement.remove();
+            });
+        }
+
+        function showText(message, duration, color) {
+            text.innerHTML = message;
+            text.style.color = color;
+            text.style.opacity = '1';
+
+            setTimeout(() => {
+                text.style.opacity = '0'; // Fade out text
+                setTimeout(() => {
+                    if (message === "You are the best person I have ever met!") {
+                        showText("My Pyaari Best!", 2000, "purple");
+                    } else if (message === "My Pyaari Best!") {
+                        showText("Love you, my cutie pie! 💕", 2000, "white");
+                    } else {
+                        // Show hug emoji at the end
+                        const hugEmoji = document.createElement('div');
+                        hugEmoji.innerHTML = '🤗';
+                        hugEmoji.style.fontSize = '3em';
+                        hugEmoji.style.position = 'absolute';
+                        hugEmoji.style.bottom = '10%';
+                        hugEmoji.style.left = '50%';
+                        hugEmoji.style.transform = 'translateX(-50%)';
+                        document.body.appendChild(hugEmoji);
+
+                        setTimeout(() => {
+                            hugEmoji.remove();
+                            showFinalButton();
+                        }, 3000);
+                    }
+                }, 1000);
+            }, duration);
+        }
+
+        function showFinalButton() {
+            const finalButton = document.createElement('button');
+            finalButton.innerHTML = 'Go Back';
+            finalButton.style.position = 'absolute';
+            finalButton.style.bottom = '20px';
+            finalButton.style.left = '50%';
+            finalButton.style.transform = 'translateX(-50%)';
+            finalButton.style.padding = '10px 20px';
+            finalButton.style.fontSize = '1.2em';
+            finalButton.style.backgroundColor = '#FF1493';
+            finalButton.style.color = 'white';
+            finalButton.style.border = 'none';
+            finalButton.style.borderRadius = '5px';
+            finalButton.style.cursor = 'pointer';
+            document.body.appendChild(finalButton);
+
+            finalButton.addEventListener('click', () => {
+                window.history.back(); // Redirect to the previous page
+            });
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Rain Animation</title>
+    <style>
+        /* Continuation of previous styles */
+        .heartRain {
+            position: absolute;
+            top: -10%;
+            font-size: 2em; /* Adjust size */
+            animation: rain linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes rain {
+            0% {
+                top: -10%;
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) scale(0);
+                top: 100%;
                 opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="text">You are Loved! 💖</div>
-        <button id="triggerBtn">Click Me!</button>
-        <div id="hearts"></div>
-    </div>
     <script>
-        const button = document.getElementById('triggerBtn');
-        const text = document.getElementById('text');
-        const heartsContainer = document.getElementById('hearts');
+        // Start heart rain after all animations are done
+        function startHeartRain() {
+            setInterval(() => {
+                createHeartRain();
+            }, 500); // Adjust frequency of heart rain
+        }
 
-        button.addEventListener('click', () => {
-            // Hide the button and text with smooth transition
-            button.style.opacity = '0';
-            text.style.opacity = '0';
-            
-            // Create heart animation
-            for (let i = 0; i < 100; i++) {
-                createHeart();
-            }
+        function createHeartRain() {
+            const heartRain = document.createElement('div');
+            heartRain.classList.add('heartRain');
+            heartRain.innerHTML = '💕';
 
-            // Hide elements and show new button after a delay
-            setTimeout(() => {
-                button.style.display = 'none';  // Hide button
-                text.style.display = 'none';     // Hide text
-                showNewButton(); // Call function to show new button
-            }, 2000); // Adjust timing if needed
-        });
+            const randomX = Math.random() * 100; // Random horizontal position
+            heartRain.style.left = `${randomX}vw`;
+            heartRain.style.animationDuration = `${Math.random() * 2 + 3}s`; // Random duration between 3 and 5 seconds
+            document.body.appendChild(heartRain);
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '💖';
-            
-            // Set random horizontal position
-            const randomX = Math.random() * 100; // 0 to 100%
-            heart.style.left = `${randomX}vw`;
-            
-            // Set random animation duration
-            const duration = Math.random() * 3 + 2; // Between 2s and 5s
-            heart.style.animationDuration = `${duration}s`;
-            
-            // Append heart to the container
-            heartsContainer.appendChild(heart);
-
-            // Remove heart after animation
-            heart.addEventListener('animationend', () => {
-                heart.remove();
+            // Remove heart after animation ends
+            heartRain.addEventListener('animationend', () => {
+                heartRain.remove();
             });
         }
 
-        function showNewButton() {
-            const newButton = document.createElement('button');
-            newButton.innerText = 'Go to Next Page';
-            newButton.style.padding = '10px 20px';
-            newButton.style.fontSize = '1em';
-            newButton.style.color = 'white';
-            newButton.style.backgroundColor = '#FF1493';
-            newButton.style.border = 'none';
-            newButton.style.borderRadius = '5px';
-            newButton.style.cursor = 'pointer';
-            newButton.style.transition = 'opacity 0.5s ease-in-out';
-            newButton.style.opacity = '0'; // Start hidden
-
-            // Append the new button to the body or container
-            document.body.appendChild(newButton);
-            
-            // Show the new button with fade-in effect
-            setTimeout(() => {
-                newButton.style.opacity = '1'; // Fade in
-            }, 100); // Short delay to allow for initial rendering
-
-            // Add event listener for redirection
-            newButton.addEventListener('click', () => {
-                window.location.href = 'https://example.com'; // Change to your desired URL
-            });
-        }
+        // Call startHeartRain when the page is fully loaded
+        window.onload = () => {
+            startHeartRain();
+        };
     </script>
 </body>
 </html>
