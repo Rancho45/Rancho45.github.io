@@ -3,201 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heartfelt Animation</title>
+    <title>Heart Animation</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
-            font-family: 'Arial', sans-serif;
             overflow: hidden;
+            background-color: black;
+            font-family: Arial, sans-serif;
+            transition: background-color 2s ease; /* Smooth background transition */
         }
 
-        .container {
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        /* Heart Button Style */
-        .heart-button {
-            background-color: red;
-            color: white;
-            font-size: 2em;
-            padding: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 20px red;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Text Animation */
-        .text {
-            font-size: 2.5em;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.5s ease, transform 1.5s ease;
-        }
-
-        /* Final text animation for 'My Bestu' */
-        .final-text {
-            font-size: 3em;
-            color: yellow;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 2s ease, transform 2s ease;
-        }
-
-        /* Pulse Animation for the Heart */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        /* Heart Burst Animation */
-        .burst {
+        .heart {
+            font-size: 100px;
             position: absolute;
-            top: 50%;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
+            animation: beat 1s infinite alternate ease-in-out;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @keyframes beat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .text {
+            color: white;
+            text-align: center;
+            font-size: 30px;
             opacity: 0;
-            font-size: 10em;
-            transition: opacity 1s ease;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-30px); /* Start above */
+            z-index: 9;
         }
 
-        /* Background Color Transitions */
-        @keyframes changeBackground {
-            0% {
-                background-color: black;
-            }
-            100% {
-                background-color: purple;
-            }
+        .emoji {
+            position: absolute;
+            pointer-events: none;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
-        .hearts-rain {
+        .rain {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            pointer-events: none; /* Prevent interaction */
         }
 
-        .heart {
+        button {
             position: absolute;
-            font-size: 2em;
-            animation: fall 4s linear infinite;
-            color: red;
-        }
-
-        /* Heartfall Animation */
-        @keyframes fall {
-            0% {
-                top: -10%;
-                transform: rotate(0deg);
-            }
-            100% {
-                top: 100%;
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Hugging animation */
-        .hug-emoji {
-            font-size: 4em;
-            opacity: 0;
-            transition: opacity 2s ease;
+            left: 50%;
+            top: 80%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: pink;
+            border: none;
+            border-radius: 10px;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out;
+            z-index: 8;
         }
     </style>
 </head>
 <body>
+    <div class="heart" id="heart">❤️ Click Me</div>
+    <div class="text" id="text1">You are the best person I have ever met...</div>
+    <div class="text" id="text2">My pyaari best...</div>
+    <div class="text" id="text3">Love you my cutiepie...</div>
+    <div class="text" id="hugEmoji">🫂</div>
+    <div class="rain" id="rainContainer"></div> <!-- Container for rain -->
 
-<div class="container">
-    <div class="heart-button" id="heart-button">❤️ Click Me</div>
-    
-    <div class="text" id="text1">Love you more than you think, my meow meow!</div>
-    <div class="text" id="text2">You're the bestest friend of mine</div>
-    
-    <div class="hug-emoji" id="hug-emoji">🫂</div>
-    <div class="final-text" id="final-text">My Bestu!</div>
+    <script>
+        const heart = document.getElementById('heart');
+        const text1 = document.getElementById('text1');
+        const text2 = document.getElementById('text2');
+        const text3 = document.getElementById('text3');
+        const hugEmoji = document.getElementById('hugEmoji');
+        const rainContainer = document.getElementById('rainContainer');
 
-    <!-- Hidden burst emojis -->
-    <div class="burst" id="burst">💖💐🎉❤️</div>
-</div>
+        let clickCount = 0;
 
-<!-- Heart Rain Container -->
-<div class="hearts-rain" id="hearts-rain"></div>
+        heart.addEventListener('click', function() {
+            if (clickCount === 0) {
+                showBlast();
+                clickCount++;
+            }
+        });
 
-<script>
-    const heartButton = document.getElementById('heart-button');
-    const text1 = document.getElementById('text1');
-    const text2 = document.getElementById('text2');
-    const finalText = document.getElementById('final-text');
-    const burst = document.getElementById('burst');
-    const hugEmoji = document.getElementById('hug-emoji');
-    const heartsRain = document.getElementById('hearts-rain');
-
-    // Heart button click event
-    heartButton.addEventListener('click', () => {
-        // Burst animation
-        burst.style.opacity = 1;
-        burst.style.transform = 'scale(1.5)';
-        setTimeout(() => {
-            burst.style.opacity = 0;
-        }, 1500);
-        
-        // First text animation
-        setTimeout(() => {
+        function showBlast() {
+            // Show first text with smooth transition
             text1.style.opacity = 1;
-            text1.style.transform = 'translateY(0)';
-        }, 2000);
+            text1.style.transform = 'translate(-50%, -50%) translateY(0)'; // Move into view
 
-        // Second text and hug emoji animation
-        setTimeout(() => {
-            text1.style.opacity = 0;
-            text2.style.opacity = 1;
-            text2.style.transform = 'translateY(0)';
-            hugEmoji.style.opacity = 1;
-        }, 5000);
+            // Create emoji blast
+            const emojis = ['💖', '💐', '🌸', '🌼', '❤️'];
+            for (let i = 0; i < 100; i++) {
+                createEmojiBlast(emojis[Math.floor(Math.random() * emojis.length)]);
+            }
 
-        // Hearts rain effect
-        createHeartRain();
+            // Change background color smoothly
+            document.body.style.backgroundColor = 'pink';
 
-        // Final text animation
-        setTimeout(() => {
-            text2.style.opacity = 0;
-            hugEmoji.style.opacity = 0;
-            finalText.style.opacity = 1;
-            finalText.style.transform = 'translateY(0)';
-            document.body.style.animation = 'changeBackground 4s forwards';
-        }, 9000);
-    });
+            // Show second text after some time
+            setTimeout(() => {
+                text1.style.opacity = 0;
+                text1.style.transform = 'translate(-50%, -50%) translateY(-30px)'; // Move out
+                text2.style.opacity = 1;
+                text2.style.transform = 'translate(-50%, -50%) translateY(0)'; // Move in
 
-    // Create heart rain effect
-    function createHeartRain() {
-        for (let i = 0; i < 20; i++) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.textContent = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-            heartsRain.appendChild(heart);
+                // Change background to purple
+                setTimeout(() => {
+                    document.body.style.backgroundColor = 'purple';
+                }, 1000);
+            }, 3000);
+
+            // Show third text after some more time
+            setTimeout(() => {
+                text2.style.opacity = 0;
+                text2.style.transform = 'translate(-50%, -50%) translateY(-30px)'; // Move out
+                text3.style.opacity = 1;
+                text3.style.transform = 'translate(-50%, -50%) translateY(0)'; // Move in
+                setRain();
+            }, 6000);
+
+            // Show hug emoji and reset
+            setTimeout(() => {
+                text3.style.opacity = 0;
+                text3.style.transform = 'translate(-50%, -50%) translateY(-30px)'; // Move out
+                hugEmoji.style.opacity = 1;
+                hugEmoji.style.transform = 'translate(-50%, -50%) translateY(0)'; // Move in
+                setTimeout(() => {
+                    hugEmoji.style.opacity = 0;
+                    hugEmoji.style.transform = 'translate(-50%, -50%) translateY(-30px)'; // Move out
+                    showButton();
+                }, 2000);
+            }, 9000);
         }
-    }
-</script>
 
+        function createEmojiBlast(emoji) {
+            const emojiElement = document.createElement('div');
+            emojiElement.className = 'emoji';
+            emojiElement.innerText = emoji;
+            emojiElement.style.left = Math.random() * window.innerWidth + 'px';
+            emojiElement.style.top = Math.random() * window.innerHeight + 'px';
+            emojiElement.style.fontSize = Math.random() * 50 + 30 + 'px';
+            document.body.appendChild(emojiElement);
+
+            // Animate emoji explosion
+            setTimeout(() => {
+                const deltaX = (Math.random() - 0.5) * 200; // Random horizontal movement
+                const deltaY = (Math.random() - 0.5) * 200; // Random vertical movement
+                emojiElement.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.5)`;
+                emojiElement.style.opacity = 0;
+            }, 100);
+
+            // Remove emoji after animation
+            setTimeout(() => {
+                emojiElement.remove();
+            }, 2000);
+        }
+
+        function setRain() {
+            for (let i = 0; i < 100; i++) {
+                const heartRain = document.createElement('div');
+                heartRain.innerText = '💕';
+                heartRain.style.position = 'absolute';
+                heartRain.style.left = Math.random() * 100 + 'vw';
+                heartRain.style.fontSize = Math.random() * 30 + 20 + 'px';
+                heartRain.style.opacity = 1;
+                heartRain.style.animationDuration = (Math.random() * 2 + 3) + 's'; // Random fall duration
+                heartRain.style.transform = 'translateY(0)';
+                heartRain.style.transition = 'transform 1s linear, opacity 2s linear';
+                rainContainer.appendChild(heartRain);
+                
+                // Animate rain with falling effect
+                setTimeout(() => {
+                    heartRain.style.transform = 'translateY(100vh)'; // Fall down
+                    heartRain.style.opacity = 0; // Fade out
+                }, 100);
+            }
+        }
+
+        function showButton() {
+            const button = document.createElement('button');
+            button.innerText = 'Go Back';
+            button.addEventListener('click', function() {
+                window.history.back(); // Go back to the previous page
+            });
+            document.body.appendChild(button);
+
+            // Fade in the button
+            setTimeout(() => {
+                button.style.opacity = 1;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
