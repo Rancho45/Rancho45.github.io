@@ -3,217 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Heart Animation</title>
+    <title>Heart Blast Animation</title>
     <style>
-        /* Reset body margin and styling */
-        body {
+        body, html {
             margin: 0;
-            overflow: hidden; /* Prevent scrolling */
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevent scroll */
             background-color: black; /* Background color */
-            font-family: 'Arial', sans-serif; /* Font for text */
-            color: white; /* Text color */
-            position: relative; /* Relative positioning for absolute children */
+            position: relative; /* For absolute positioning of elements */
         }
 
-        /* Styling for heart button */
-        .heart-button {
-            position: absolute; /* Absolute positioning */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Adjust for centering */
-            background: transparent; /* Transparent background */
-            border: none; /* No border */
-            font-size: 60px; /* Font size */
-            cursor: pointer; /* Change cursor on hover */
-            animation: beat 1s infinite; /* Beat animation */
-            z-index: 10; /* Layering */
-            outline: none; /* Remove outline */
-        }
-
-        /* Animation keyframes for the heart button */
-        @keyframes beat {
-            0%, 20%, 50%, 80%, 100% {
-                transform: scale(1); /* Default scale */
-            }
-            10% {
-                transform: scale(1.2); /* Scale up */
-            }
-        }
-
-        /* Styling for message text */
-        .text {
-            position: absolute; /* Positioning */
-            font-size: 2.5em; /* Font size */
-            opacity: 0; /* Initial opacity */
-            transition: opacity 1s ease-in-out, transform 1s ease; /* Smooth transitions */
-            text-align: center; /* Center text */
-            width: 100%; /* Full width */
-            top: 50%; /* Vertical position */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50px); /* Initial position */
-            z-index: 10; /* Layering */
-        }
-
-        /* Rain container styling */
         .rain {
-            position: absolute; /* Positioning */
-            top: 0; /* Start at the top */
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            pointer-events: none; /* Disable interactions */
-            overflow: hidden; /* Hide overflow */
-            z-index: 1; /* Layering */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Ignore mouse events */
         }
 
-        /* Individual heart raindrop styling */
         .heart {
-            position: absolute; /* Positioning */
-            width: 15px; /* Width */
-            height: 15px; /* Height */
-            background-color: red; /* Heart color */
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Heart shape */
-            opacity: 0; /* Initial opacity */
-            pointer-events: none; /* Disable interactions */
-            z-index: 2; /* Layering */
+            position: absolute;
+            bottom: 100%; /* Start above the screen */
+            width: 30px; /* Heart size */
+            height: 30px; /* Heart size */
+            background: red; /* Heart color */
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Heart shape */
+            opacity: 1; /* Fully visible */
+            animation: fall linear forwards; /* Falling animation */
         }
 
-        /* Raindrop fall animation */
         @keyframes fall {
             0% {
-                transform: translateY(0); /* Start position */
-                opacity: 1; /* Full opacity */
+                transform: translateY(0); /* Start from the top */
+                opacity: 1; /* Fully visible */
             }
             100% {
-                transform: translateY(100vh); /* End position */
+                transform: translateY(100vh); /* End at the bottom of the screen */
                 opacity: 0; /* Fade out */
             }
         }
 
-        /* Explosion animation for hearts */
-        @keyframes explode {
-            0% { transform: scale(1); } /* Start scale */
-            100% { transform: scale(3); } /* End scale */
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the text */
+            color: white; /* Text color */
+            font-size: 24px; /* Text size */
+            text-align: center; /* Center align text */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease; /* Smooth fade */
+            z-index: 10; /* Ensure it's above other elements */
         }
 
-        /* Styling for redirect button */
-        .redirect-button {
-            position: absolute; /* Positioning */
-            top: 70%; /* Vertical position */
-            left: 50%; /* Horizontal position */
-            transform: translate(-50%, -50%); /* Center adjustment */
-            font-size: 30px; /* Font size */
-            background-color: white; /* Background color */
-            border: none; /* No border */
-            padding: 10px 20px; /* Padding */
-            cursor: pointer; /* Change cursor on hover */
-            opacity: 0; /* Initial opacity */
-            transition: opacity 1s ease; /* Smooth transition */
+        .button {
+            position: absolute;
+            bottom: 20px; /* Position above the bottom */
+            left: 50%;
+            transform: translateX(-50%); /* Center the button */
+            background-color: red; /* Button color */
+            color: white; /* Button text color */
+            padding: 10px 20px; /* Button padding */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer on hover */
+            z-index: 10; /* Ensure button is above other elements */
+            transition: background-color 0.3s; /* Smooth background color change */
         }
 
-        .redirect-button.show {
-            opacity: 1; /* Show button */
+        .button:hover {
+            background-color: darkred; /* Darker color on hover */
         }
 
-        /* Additional heart fall animation */
-        .heart-fall {
-            animation: fall 3s linear forwards; /* Falling animation */
+        .redirect {
+            display: none; /* Initially hidden */
+            position: absolute;
+            bottom: 70px; /* Position above the main button */
+            left: 50%;
+            transform: translateX(-50%); /* Center the redirect button */
+            background-color: blue; /* Redirect button color */
+            color: white; /* Redirect button text color */
+            padding: 10px 20px; /* Button padding */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer on hover */
+            z-index: 10; /* Ensure it's above other elements */
+            transition: background-color 0.3s; /* Smooth background color change */
         }
 
-        .heart-explode {
-            animation: explode 0.5s ease forwards; /* Exploding animation */
+        .redirect:hover {
+            background-color: darkblue; /* Darker color on hover */
         }
     </style>
 </head>
 <body>
-    <button class="heart-button">❤️ Click Me ❤️</button> <!-- Heart button -->
-    <div class="rain"></div> <!-- Container for heart rain -->
-    <div class="text" id="message"></div> <!-- Message display -->
-    <button class="redirect-button" id="redirectBtn">Redirect</button> <!-- Redirect button -->
-
+    <div class="rain"></div>
+    <div class="message" id="message">You are amazing!</div>
+    <button class="button" id="heartButton">Click for Heart Blast!</button>
+    <button class="redirect" id="redirectButton">Go to Website</button>
     <script>
-        // Select elements
-        const heartButton = document.querySelector('.heart-button'); // Heart button
-        const message = document.getElementById('message'); // Message element
-        const redirectButton = document.getElementById('redirectBtn'); // Redirect button
+        const heartButton = document.getElementById('heartButton');
+        const redirectButton = document.getElementById('redirectButton');
+        const message = document.getElementById('message');
 
-        // Function to show messages with fade in and out
-        function showMessage(msg) {
-            message.textContent = msg; // Set message text
-            message.style.opacity = '1'; // Fade in message
-            message.style.transform = 'translate(-50%, -50%)'; // Move message into view
-            setTimeout(() => {
-                message.style.opacity = '1'; // Keep message visible
-            }, 3000); // Duration to display message
-        }
-
-        // Function to create hearts with explosion effect
+        // Create heart element and animate it
         function createHeart() {
-            const heart = document.createElement('div'); // Create new heart
+            const heart = document.createElement('div'); // Create heart element
             heart.classList.add('heart'); // Add heart class
-            heart.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
-            heart.style.animation = `fall ${Math.random() * 4 + 2}s linear forwards`; // Fall animation
-            heart.style.opacity = '1'; // Set initial opacity
-            document.querySelector('.rain').appendChild(heart); // Append heart to rain container
+            heart.style.left = Math.random() * 100 + 'vw'; // Randomize horizontal position
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Random fall duration
+            document.querySelector('.rain').appendChild(heart); // Append heart to the rain container
             setTimeout(() => {
-                heart.remove(); // Remove heart after animation
-            }, 4000); // Time before heart removal
+                heart.remove(); // Remove heart after animation completes
+            }, 5000); // Time before heart removal
         }
 
-        // Function for heart blast effect
+        // Heart blast effect on button click
         function heartBlast() {
-            const numHearts = 100; // Number of hearts to create
+            const numHearts = 50; // Number of hearts for the blast
             for (let i = 0; i < numHearts; i++) {
                 createHeart(); // Create hearts
             }
-            document.body.style.transition = "background-color 2s ease"; // Smooth background color change
-            document.body.style.backgroundColor = "pink"; // Change background color
-            setTimeout(() => {
-                document.body.style.backgroundColor = "purple"; // Change to purple after delay
-            }, 5000); // Delay before color change
-            heartButton.style.display = 'none'; // Hide button after 0.5 seconds
-            setTimeout(() => {
-                redirectButton.style.opacity = '1'; // Show redirect button after blast
-            }, 500); // Delay for redirect button
+            showMessage(); // Show message after blast
         }
 
-        // Function to start the animation
-        function startAnimation() {
-            heartButton.addEventListener('click', () => {
-                heartButton.style.display = 'none'; // Hide button
-                heartBlast(); // Trigger heart blast
-                setTimeout(() => showMessage("You are the best person I have ever met..."), 1000); // Show first message
-            });
+        // Show message with fade in effect
+        function showMessage() {
+            message.style.opacity = '1'; // Fade in the message
+            setTimeout(() => {
+                message.style.opacity = '0'; // Fade out message
+            }, 2000); // Show message for 2 seconds
+            setTimeout(() => {
+                redirectButton.style.display = 'block'; // Show redirect button after delay
+            }, 3000); // Delay before showing redirect button
         }
-
-        // Initialize the animation on page load
-        startAnimation();
 
         // Redirect button functionality
         redirectButton.addEventListener('click', () => {
             window.location.href = "https://www.example.com"; // Redirect to desired URL
         });
 
-        // Additional random heart animations
-        setInterval(() => {
-            createHeart(); // Create hearts at random intervals
-        }, 2000); // Interval duration for creating hearts
-
-        // Optional: Adding more animations for user interactions
-        heartButton.addEventListener('mouseenter', () => {
-            heartButton.style.transform = 'scale(1.1)'; // Scale up on hover
+        // Start the animation on button click
+        heartButton.addEventListener('click', () => {
+            heartButton.style.display = 'none'; // Hide the button
+            heartBlast(); // Trigger heart blast
         });
-        heartButton.addEventListener('mouseleave', () => {
-            heartButton.style.transform = 'scale(1)'; // Scale back on mouse leave
-        });
-
-        // Function to reset the background color after a period
-        function resetBackgroundColor() {
-            document.body.style.transition = "background-color 2s ease"; // Smooth transition
-            document.body.style.backgroundColor = "black"; // Reset to original color
-        }
-
-        // Call resetBackgroundColor after a delay
-        setTimeout(resetBackgroundColor, 10000); // Reset background after 10 seconds
     </script>
 </body>
 </html>
+<style>
+        /* Additional styles for heart animation */
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .heart {
+            animation: fall linear forwards, heartBeat 1s infinite; /* Add heart beat animation */
+        }
+
+        /* Add transition to the button and redirect button */
+        .button, .redirect {
+            transition: all 0.3s ease;
+        }
+    </style>
+
+    <script>
+        // Random heart color function (optional)
+        function getRandomColor() {
+            const colors = ['red', 'pink', 'purple', 'orange']; // Array of colors
+            return colors[Math.floor(Math.random() * colors.length)]; // Return a random color
+        }
+
+        // Modify heart creation to use random colors
+        function createHeart() {
+            const heart = document.createElement('div'); // Create heart element
+            heart.classList.add('heart'); // Add heart class
+            heart.style.left = Math.random() * 100 + 'vw'; // Randomize horizontal position
+            heart.style.backgroundColor = getRandomColor(); // Set random heart color
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Random fall duration
+            document.querySelector('.rain').appendChild(heart); // Append heart to the rain container
+            setTimeout(() => {
+                heart.remove(); // Remove heart after animation completes
+            }, 5000); // Time before heart removal
+        }
+    </script>
