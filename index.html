@@ -3,244 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Animation</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            background-color: black;
-            overflow: hidden;
-            position: relative;
-            color: white;
-        }
-
-        #container {
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        #heartButton {
-            padding: 10px 20px;
-            font-size: 2em; /* Adjusted for mobile */
-            color: white;
-            background-color: red;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            animation: beat 1s infinite;
-            transition: transform 0.2s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        @keyframes beat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        #blastArea {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            display: none; /* Hidden initially */
-        }
-
-        .emoji {
-            position: absolute;
-            font-size: 3em; /* Adjust emoji size */
-            opacity: 0;
-        }
-
-        #text {
-            font-size: 3em; /* Adjust font size for mobile */
-            transition: opacity 1s ease-in-out;
-            opacity: 0;
-            position: absolute;
-            z-index: 10;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        @keyframes rain {
-            0% {
-                top: -10%;
-            }
-            100% {
-                top: 100%;
-            }
-        }
-
-        .heartRain {
-            position: absolute;
-            top: -10%;
-            font-size: 3em; /* Adjust size for heart rain */
-            animation: rain linear forwards;
-            opacity: 0;
-        }
-
-        /* Responsive design for 9:16 aspect ratio */
-        @media (max-width: 360px) {
-            #heartButton {
-                padding: 8px 16px;
-                font-size: 1.5em; /* Smaller button on very small screens */
-            }
-            #text {
-                font-size: 2.5em; /* Adjust text size */
-            }
-        }
-    </style>
+    <title>Love App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="container">
-        <button id="heartButton">❤️ Click Me!</button>
-        <div id="blastArea"></div>
-        <div id="text"></div>
+        <button id="clickMe" class="btn">Click Me ❤️</button>
+        <div id="userInput" class="hidden">
+            <input type="text" id="nameInput" placeholder="Enter name here..." required>
+            <span class="hint">Enter the name of the person you love the most.</br>
+(he has same number of letters in his name as yours).</span>
+            <button id="startButton" class="btn hidden">Start ❤️</button>
+        </div>
+        <div id="textContainer" class="hidden">
+            <h1 id="displayText"></h1>
+            <div id="emojiBlast" class="hidden"></div>
+        </div>
+        <button id="finalButton" class="hidden">Go to Link</button>
     </div>
-
-    <script>
-        const heartButton = document.getElementById('heartButton');
-        const blastArea = document.getElementById('blastArea');
-        const text = document.getElementById('text');
-
-        heartButton.addEventListener('click', () => {
-            heartButton.style.display = 'none'; // Hide button
-            blastArea.style.display = 'flex'; // Show blast area
-            blastEmojiBlast(); // Start emoji blast
-        });
-
-        function blastEmojiBlast() {
-            const emojis = ['💖', '🌸', '🎉', '🌺', '💗', '💞'];
-            for (let i = 0; i < 100; i++) {
-                createEmoji(emojis[Math.floor(Math.random() * emojis.length)]);
-            }
-            setTimeout(() => {
-                blastArea.style.display = 'none'; // Hide blast area after emojis
-                document.body.style.transition = "background-color 2s"; // Transition background
-                document.body.style.backgroundColor = "pink"; // Change to pink
-                showText("You are the best person I have ever met!", 2000, "pink");
-            }, 2000);
-        }
-
-        function createEmoji(emoji) {
-            const emojiElement = document.createElement('div');
-            emojiElement.classList.add('emoji');
-            emojiElement.innerHTML = emoji;
-
-            // Random position and animation
-            const x = Math.random() * 100; // 0 to 100%
-            const y = Math.random() * 100; // 0 to 100%
-
-            emojiElement.style.left = `${x}vw`;
-            emojiElement.style.top = `${y}vh`;
-            emojiElement.style.animationDuration = `${Math.random() * 1 + 1}s`;
-            emojiElement.style.opacity = '1';
-
-            blastArea.appendChild(emojiElement);
-
-            // Remove after animation ends
-            emojiElement.addEventListener('animationend', () => {
-                emojiElement.remove();
-            });
-        }
-
-        function showText(message, duration, color) {
-            text.innerHTML = message;
-            text.style.color = color;
-            text.style.opacity = '1';
-
-            setTimeout(() => {
-                text.style.opacity = '0'; // Fade out text
-                setTimeout(() => {
-                    if (message === "You are the best person I have ever met!") {
-                        document.body.style.backgroundColor = "purple"; // Change to purple
-                        showText("My Pyaari Best!", 2000, "purple");
-                    } else if (message === "My Pyaari Best!") {
-                        showText("Love you, my cutie pie! 💕", 2000, "white");
-                    } else {
-                        // Show hug emoji at the end
-                        const hugEmoji = document.createElement('div');
-                        hugEmoji.innerHTML = '🤗';
-                        hugEmoji.style.fontSize = '4em'; // Adjust for visibility
-                        hugEmoji.style.position = 'absolute';
-                        hugEmoji.style.bottom = '20%'; // Adjust for better visibility
-                        hugEmoji.style.left = '50%';
-                        hugEmoji.style.transform = 'translateX(-50%)';
-                        document.body.appendChild(hugEmoji);
-
-                        setTimeout(() => {
-                            hugEmoji.remove();
-                            showFinalButton();
-                        }, 3000);
-                    }
-                }, 1000);
-            }, duration);
-        }
-
-        function showFinalButton() {
-            const finalButton = document.createElement('button');
-            finalButton.innerHTML = 'Go Back';
-            finalButton.style.position = 'absolute';
-            finalButton.style.bottom = '20px';
-            finalButton.style.left = '50%';
-            finalButton.style.transform = 'translateX(-50%)';
-            finalButton.style.padding = '10px 20px';
-            finalButton.style.fontSize = '1.5em'; // Adjusted for mobile
-            finalButton.style.backgroundColor = '#FF1493';
-            finalButton.style.color = 'white';
-            finalButton.style.border = 'none';
-            finalButton.style.borderRadius = '5px';
-            finalButton.style.cursor = 'pointer';
-            document.body.appendChild(finalButton);
-
-            finalButton.addEventListener('click', () => {
-                window.history.back(); // Redirect to the previous page
-            });
-        }
-
-        // Heart rain animation function
-        function startHeartRain() {
-            setInterval(() => {
-                createHeartRain();
-            }, 500); // Adjust frequency of heart rain
-        }
-
-        function createHeartRain() {
-            const heartRain = document.createElement('div');
-            heartRain.classList.add('heartRain');
-            heartRain.innerHTML = '💕';
-
-            const randomX = Math.random() * 100; // Random horizontal position
-            heartRain.style.left = `${randomX}vw`;
-            heartRain.style.animationDuration = `${Math.random() * 2 + 3}s`; // Random duration between 3 and 5 seconds
-            document.body.appendChild(heartRain);
-
-            // Remove heart after animation ends
-            heartRain.addEventListener('animationend', () => {
-                heartRain.remove();
-            });
-        }
-
-        // Call startHeartRain when the page is fully loaded
-        window.onload = () => {
-            startHeartRain();
-        };
-    </script>
+    <div class="heartRain"></div>
+    <div id="particleContainer" class="hidden"></div>
+    <script src="script.js"></script>
 </body>
 </html>
