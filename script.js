@@ -91,12 +91,8 @@ function showFinalButton() {
     // Set the button's click event to open the YouTube video
     finalButton.addEventListener('click', function() {
         const videoUrl = 'https://youtube.com/shorts/ROFF9FaSieE?si=I4g9N4a8kabt57FU';
-        // Attempt to open the YouTube app directly
-        window.location.href = `vnd.youtube:${videoUrl}`;
         
-        // Fallback to the web link after a short timeout
-        setTimeout(function() {
-            window.open(videoUrl, '_blank');
-        }, 2500); // Adjust the timeout if necessary
+        // Open the YouTube video link in the default browser
+        window.open(videoUrl, '_blank');
     });
 }
