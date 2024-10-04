@@ -10,7 +10,7 @@ document.getElementById('nameInput').addEventListener('input', function() {
 
 document.getElementById('startButton').addEventListener('click', function() {
     const nameInput = document.getElementById('nameInput').value.trim().toLowerCase();
-    const correctName = "parshav"; // Correct name
+    const correctName = "kpt"; // Correct name
 
     // Check if the entered name matches or has the same length
     if (nameInput === correctName || (nameInput.length === correctName.length && nameInput.includes('p'))) {
@@ -23,7 +23,7 @@ document.getElementById('startButton').addEventListener('click', function() {
             triggerAnimations(); // Start animations
         }, 3000); // Time before triggering animations
     } else {
-        alert("Please enter the correct name!");
+        alert("Please enter the correct code!");
     }
 });
 
