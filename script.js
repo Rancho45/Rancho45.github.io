@@ -83,13 +83,14 @@ function createHeartRain() {
     }
 }
 
-finalButton.addEventListener('click', function() {
-    const videoId = 'ROFF9FaSieE';
-    // Attempt to open the YouTube app directly
-    window.location.href = `vnd.youtube:${videoId}`;
-    
-    // Fallback to the web link after a small timeout
-    setTimeout(function() {
+function showFinalButton() {
+    const finalButton = document.getElementById('finalButton');
+    finalButton.classList.remove('hidden');
+    finalButton.style.animation = 'fadeIn 1s forwards'; // Add fade-in animation
+
+    // Add click event listener to the final button
+    finalButton.addEventListener('click', function() {
+        // Open the specific YouTube video directly
         window.location.href = 'https://youtube.com/shorts/ROFF9FaSieE?si=I4g9N4a8kabt57FU';
-    }, 2500); // Adjust the timeout if necessary
-});
+    });
+}
