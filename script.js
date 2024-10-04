@@ -88,9 +88,15 @@ function showFinalButton() {
     finalButton.classList.remove('hidden');
     finalButton.style.animation = 'fadeIn 1s forwards'; // Add fade-in animation
 
-    // Add click event listener to the final button
+    // Set the button's click event to open the YouTube video
     finalButton.addEventListener('click', function() {
-        // Open the specific YouTube video directly
-        window.location.href = 'https://youtube.com/shorts/ROFF9FaSieE?si=I4g9N4a8kabt57FU';
+        const videoUrl = 'https://youtube.com/shorts/ROFF9FaSieE?si=I4g9N4a8kabt57FU';
+        // Attempt to open the YouTube app directly
+        window.location.href = `vnd.youtube:${videoUrl}`;
+        
+        // Fallback to the web link after a short timeout
+        setTimeout(function() {
+            window.open(videoUrl, '_blank');
+        }, 2500); // Adjust the timeout if necessary
     });
 }
