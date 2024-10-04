@@ -87,4 +87,10 @@ function showFinalButton() {
     const finalButton = document.getElementById('finalButton');
     finalButton.classList.remove('hidden');
     finalButton.style.animation = 'fadeIn 1s forwards'; // Add fade-in animation
+
+    // Add click event listener to the final button
+    finalButton.addEventListener('click', function() {
+        // Open YouTube app with the video link
+        window.location.href = 'vnd.youtube:ROFF9FaSieE'; // Custom URL scheme for YouTube
+    });
 }
